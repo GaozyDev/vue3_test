@@ -1,53 +1,52 @@
 <template>
-  <h1>个人信息</h1>
-  姓：<input type="text" v-model="person.firstName">
-  <br>
-  名：<input type="text" v-model="person.lastName">
-  <br>
-  <span>全名：{{person.fullName}}</span>
-  <br>
-  全名：<input type="text" v-model="person.fullName">
+  <h2>当前求和为：{{sum}}</h2>
+  <button @click="sum++">点我+1</button>
+  <hr>
+  <h2>当前信息为：{{msg}}</h2>
+  <button @click="msg+='!'">修改信息</button>
 </template>
 
 <script>
-import {reactive,computed} from 'vue'
+import {ref,watch} from 'vue'
 export default {
   name: 'Demo',
 
-  //vue2中的计算属性
-  // computed:{
-  //   fullName() {
-  //     return this.person.firstName + '-' + this.person.lastName
+  //vue2里的watch写法
+  // watch:{
+  //   //简单写法
+  //   // sum(newValue,oldValue) {
+  //   //   console.log('sum的值变化了',newValue,oldValue)
+  //   // }
+  //
+  //    //完整写法
+  //   sum:{
+  //     immediate:true,
+  //     deep:true,
+  //     handler(newValue,oldValue) {
+  //       console.log('sum的值变化了',newValue,oldValue)
+  //     }
   //   }
   // },
 
   setup() {
     //数据
-    let person = reactive({
-      firstName: '张',
-      lastName: '三'
-    })
+    let sum = ref(0)
+    let msg = ref('你好啊')
 
-    //vue3中的计算属性--简写（没有考虑计算属性被修改的情况）
-    // person.fullName = computed(()=>{
-    //   return person.firstName + '-' + person.lastName
-    // })
+    //vue3中的watch，情况一：监视ref所定义的一个响应式数据
+    watch(sum,(newValue,oldValue)=>{
+      console.log('sum变了！',newValue,oldValue)
+    },{immediate:true})
 
-    //vue3中的计算属性--完整（考虑读和写）
-    person.fullName = computed({
-      get() {
-        return person.firstName + '-' + person.lastName
-      },
-      set(value) {
-        const nameArr = value.split('-')
-        person.firstName = nameArr[0]
-        person.lastName = nameArr[1]
-      }
-    })
+    //vue3中的watch，情况二：监视ref所定义的多个响应式数据
+    //   watch([sum,msg],(newValue,oldValue)=>{
+    //     console.log('sum或msg变了！',newValue,oldValue)
+    //   },{immediate:true})
 
     //返回一个对象（常用）
     return {
-      person
+      sum,
+      msg
     }
   }
 }
