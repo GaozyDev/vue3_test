@@ -1,4 +1,4 @@
-import {onBeforeUnmount, onMounted, reactive} from "vue";
+import {onBeforeUnmount, onMounted, reactive} from 'vue'
 
 export default function() {
     //实现鼠标“打点”相关的数据
@@ -6,6 +6,7 @@ export default function() {
         x: 0,
         y: 0
     })
+
 
     //实现鼠标“打点”相关的方法
     function savePoint(event) {
